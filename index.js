@@ -11,7 +11,6 @@ function isVisible(elm) {
 
 function onScroll() {
   requestAnimationFrame(checkForVisibleElements);
-
 }
 
 function watchScroll() {
@@ -70,4 +69,3 @@ export function untrack(elm) {
     tracking.splice(elmIndex, 1);
   }
 }
-

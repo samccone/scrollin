@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "dev": "babel -w index.js -m 'umd' --module-id Scrollin --out-file dist/index.js ",
+    "compile": "babel index.js -m 'umd' --module-id Scrollin --out-file dist/index.js"
+  },
+  "devDependencies": {
+    "babel": "^5.2.17",
+    "umd": "^3.0.1"
+  }
+}

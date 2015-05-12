@@ -24,4 +24,4 @@ Scrollin.track(document.querySelector('#hi'), {handler: () => alert('hi!')})
 #### Polyfill Caveats
 
 * You may need to polyfill `window.requestAnimationFrame`
-* You may need to polyfill `Array.prototype.slice`
+* You may need to polyfill `Array.prototype.splice`

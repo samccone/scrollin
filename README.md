@@ -6,6 +6,12 @@ Do something great when an element enters the viewport.
 Scrollin.track(document.querySelector('#hi'), {handler: () => alert('hi!')})
 ```
 
+### Install
+
+```
+npm i scrollin
+```
+
 ## API
 
 * `Scrollin.track(document.querySelector('#hi'), {handler: () => alert('hi!')})`

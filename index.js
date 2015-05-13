@@ -9,11 +9,11 @@ function isVisible(elm) {
     rect.top < (window.innerHeight || document.documentElement.clientHeight);
 }
 
-function onScroll() {
-  requestAnimationFrame(checkForVisibleElements);
+function _onScroll() {
+  requestAnimationFrame(_checkForVisibleElements);
 }
 
-function handleVisible(elm, options) {
+function _handleVisible(elm, options) {
   untrack(elm);
 
   if (options.handler !== void 0) {
@@ -21,31 +21,31 @@ function handleVisible(elm, options) {
   }
 }
 
-function trackNewElement(elm, options) {
+function _trackNewElement(elm, options) {
   if (isVisible(elm)) {
-    return handleVisible(elm, options);
+    return _handleVisible(elm, options);
   }
 
   tracking.push({elm: elm, options: options});
 }
 
-function checkForVisibleElements() {
+function _checkForVisibleElements() {
   tracking.forEach((v) => {
     if (isVisible(v.elm)) {
-      handleVisible(v.elm, v.options);
+      _handleVisible(v.elm, v.options);
     }
   });
 
   if (tracking.length === 0) {
-    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('scroll', _onScroll);
   }
 }
 
 function track(elm, options) {
-  requestAnimationFrame(trackNewElement.bind(this, elm, options));
+  requestAnimationFrame(_trackNewElement.bind(this, elm, options));
 
   if (tracking.length === 0) {
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', _onScroll);
   }
 }
 

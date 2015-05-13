@@ -9,7 +9,7 @@
   },
   "name": "scrollin",
   "description": "Do something great when an element enters the viewport.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/index.js",
   "directories": {
     "test": "test"

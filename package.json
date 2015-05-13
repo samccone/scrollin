@@ -14,11 +14,6 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {
-    "babel": "^5.2.17",
-    "umd": "^3.0.1",
-    "jquery": "^2.1.4"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/samccone/scrollin.git"

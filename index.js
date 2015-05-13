@@ -45,17 +45,17 @@ function checkForVisibleElements() {
   }
 }
 
-export function track(elm, options) {
+function track(elm, options) {
   requestAnimationFrame(trackNewElement.bind(this, elm, options));
 
   if (tracking.length === 0) { watchScroll(); }
 }
 
-export function untrackAll() {
+function untrackAll() {
   tracking = [];
 }
 
-export function untrack(elm) {
+function untrack(elm) {
   var elmIndex = -1;
 
   tracking.some((v, i) => {
@@ -69,3 +69,5 @@ export function untrack(elm) {
     tracking.splice(elmIndex, 1);
   }
 }
+
+export default {track, untrackAll, untrack};

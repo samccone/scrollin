@@ -13,10 +13,6 @@ function onScroll() {
   requestAnimationFrame(checkForVisibleElements);
 }
 
-function watchScroll() {
-  window.addEventListener('scroll', onScroll);
-}
-
 function handleVisible(elm, options) {
   untrack(elm);
 
@@ -48,7 +44,9 @@ function checkForVisibleElements() {
 function track(elm, options) {
   requestAnimationFrame(trackNewElement.bind(this, elm, options));
 
-  if (tracking.length === 0) { watchScroll(); }
+  if (tracking.length === 0) {
+    window.addEventListener('scroll', onScroll);
+  }
 }
 
 function untrackAll() {

@@ -42,7 +42,7 @@ function _checkForVisibleElements() {
 }
 
 function track(elm, options) {
-  window.requestAnimationFrame(_trackNewElement.bind(this, elm, options));
+  window.requestAnimationFrame(() => _trackNewElement(elm, options));
 
   if (tracking.length === 0) {
     window.addEventListener('scroll', _onScroll);

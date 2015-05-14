@@ -10,7 +10,7 @@ function isVisible(elm) {
 }
 
 function _onScroll() {
-  window.requestAnimationFrame(_checkForVisibleElements);
+  window.requestAnimationFrame(checkForVisibleElements);
 }
 
 function _handleVisible(elm, options) {
@@ -29,7 +29,7 @@ function _trackNewElement(elm, options) {
   tracking.push({elm: elm, options: options});
 }
 
-function _checkForVisibleElements() {
+function checkForVisibleElements() {
   tracking.forEach((v) => {
     if (isVisible(v.elm)) {
       _handleVisible(v.elm, v.options);
@@ -68,4 +68,4 @@ function untrack(elm) {
   }
 }
 
-export default {track, untrackAll, untrack};
+export default {track, untrackAll, untrack, checkForVisibleElements};

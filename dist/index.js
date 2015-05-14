@@ -22,7 +22,7 @@
   }
 
   function _onScroll() {
-    window.requestAnimationFrame(_checkForVisibleElements);
+    window.requestAnimationFrame(checkForVisibleElements);
   }
 
   function _handleVisible(elm, options) {
@@ -41,7 +41,7 @@
     tracking.push({ elm: elm, options: options });
   }
 
-  function _checkForVisibleElements() {
+  function checkForVisibleElements() {
     tracking.forEach(function (v) {
       if (isVisible(v.elm)) {
         _handleVisible(v.elm, v.options);
@@ -82,5 +82,5 @@
     }
   }
 
-  module.exports = { track: track, untrackAll: untrackAll, untrack: untrack };
+  module.exports = { track: track, untrackAll: untrackAll, untrack: untrack, checkForVisibleElements: checkForVisibleElements };
 });

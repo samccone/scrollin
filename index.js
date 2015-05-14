@@ -1,7 +1,7 @@
 var tracking = [];
 
 function isVisible(elm) {
-  var rect = elm.getBoundingClientRect();
+  let rect = elm.getBoundingClientRect();
 
   return rect.bottom > 0 &&
     rect.right > 0 &&
@@ -54,7 +54,7 @@ function untrackAll() {
 }
 
 function untrack(elm) {
-  var elmIndex = -1;
+  let elmIndex = -1;
 
   tracking.some((v, i) => {
     if (v.elm == elm) {

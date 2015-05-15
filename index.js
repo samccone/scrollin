@@ -1,4 +1,5 @@
 var tracking = [];
+const throttle = require('lodash.throttle');
 
 function isVisible(elm) {
   let rect = elm.getBoundingClientRect();
@@ -45,7 +46,7 @@ function track(elm, options) {
   window.requestAnimationFrame(() => _trackNewElement(elm, options));
 
   if (tracking.length === 0) {
-    window.addEventListener('scroll', _onScroll);
+    window.addEventListener('scroll', throttle(_onScroll, 100, {leading: false}));
   }
 }
 

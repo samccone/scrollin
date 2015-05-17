@@ -8,6 +8,7 @@
 ### Install
 <h4>
   <pre align="center">npm i scrollin</pre>
+  <pre align="center">bower i scrollin</pre>
 </h4>
 
 ### Use

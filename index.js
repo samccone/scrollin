@@ -67,4 +67,4 @@ function untrack(elm) {
   }
 }
 
-export default {track, untrackAll, untrack, checkForVisibleElements};
+export default {track, untrackAll, untrack, checkForVisibleElements, tracking};

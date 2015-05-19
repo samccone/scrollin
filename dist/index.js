@@ -473,14 +473,14 @@ Object.defineProperty(exports, '__esModule', {
 var tracking = [];
 var throttle = require('lodash.throttle');
 
+var _onScroll = throttle(function () {
+  return window.requestAnimationFrame(checkForVisibleElements);
+}, 100, { leading: false });
+
 function isVisible(elm) {
   var rect = elm.getBoundingClientRect();
 
   return rect.bottom > 0 && rect.right > 0 && rect.left < (window.innerWidth || document.documentElement.clientWidth) && rect.top < (window.innerHeight || document.documentElement.clientHeight);
-}
-
-function _onScroll() {
-  window.requestAnimationFrame(checkForVisibleElements);
 }
 
 function _handleVisible(elm, options) {
@@ -517,7 +517,7 @@ function track(elm, options) {
   });
 
   if (tracking.length === 0) {
-    window.addEventListener('scroll', throttle(_onScroll, 100, { leading: false }));
+    window.addEventListener('scroll', _onScroll);
   }
 }
 

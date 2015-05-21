@@ -39,3 +39,5 @@ Scrollin.track(document.querySelector('#hi'), {handler: () => alert('hi!')})
 * You may need to polyfill `Array.prototype.some`
 
 📜
+
+[![Build Status](https://travis-ci.org/samccone/scrollin.svg)](https://travis-ci.org/samccone/scrollin)

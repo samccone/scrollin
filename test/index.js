@@ -28,6 +28,11 @@ global.window = {
     global.window[evt].push(cb);
   },
   removeEventListener: (evt, cb) => {
+    if (cb) {
+      global.window[evt].splice(global.window[evt].indexOf(cb), 1);
+    } else {
+      delete global.window[evt];
+    }
   },
   innerWidth: 500,
   innerHeight: 200,

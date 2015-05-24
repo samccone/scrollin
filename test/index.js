@@ -1,5 +1,8 @@
 const assert = require('assert');
 import {track, tracking, untrack} from '../index.js';
+function RAF(cb) {
+  setTimeout(cb, 0);
+}
 
 class Element {
   constructor(bounds = {}) {
@@ -19,7 +22,7 @@ class Element {
 }
 
 global.window = {
-  requestAnimationFrame: (fn) => setTimeout(fn, 0),
+  requestAnimationFrame: RAF,
   addEventListener: (evt, cb) => {
     global.window[evt] = global.window[evt] || [];
     global.window[evt].push(cb);
@@ -59,7 +62,7 @@ describe('scrolling an element into the viewport', () => {
     let elm = new Element({top: 600, bottom: 700});
     track(elm, {handler: () => done()});
 
-    global.window.requestAnimationFrame(() => {
+    RAF(() => {
       elm.top = 0;
       elm.right = 10;
       elm.bottom = 100;

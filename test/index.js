@@ -50,11 +50,15 @@ describe('adding an element that is visible', () => {
 });
 
 describe('adding an element that is not visible', () => {
-  it('should be in the tracking array', (done) => {
-    let elm = new Element({bottom: 3000, left: 8, right: 1200, top: 2900});
+  let elm;
+  beforeEach((done) => {
+    elm = new Element({bottom: 3000, left: 8, right: 1200, top: 2900});
     track(elm, {});
+    RAF(done);
+  });
 
-    global.window.requestAnimationFrame(() => {
+  it('should be in the tracking array', (done) => {
+    RAF(() => {
       assert.deepEqual(tracking.length, 1);
       untrack(elm);
       done();
@@ -63,8 +67,13 @@ describe('adding an element that is not visible', () => {
 });
 
 describe('scrolling an element into the viewport', () => {
+  let elm;
+
+  beforeEach(() => {
+    elm = new Element({top: 600, bottom: 700});
+  });
+
   it('should invoke the callback', (done) => {
-    let elm = new Element({top: 600, bottom: 700});
     track(elm, {handler: () => done()});
 
     RAF(() => {

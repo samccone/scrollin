@@ -3,6 +3,10 @@ const throttle = require('lodash.throttle');
 
 const _onScroll = throttle(() => window.requestAnimationFrame(checkForVisibleElements), 100, {leading: false});
 
+function getTracking() {
+  return tracking;
+}
+
 function isVisible(elm) {
   let rect = elm.getBoundingClientRect();
 
@@ -24,7 +28,6 @@ function _trackNewElement(elm, options) {
   if (isVisible(elm)) {
     return _handleVisible(elm, options);
   }
-
   tracking.push({elm: elm, options: options});
 }
 
@@ -36,7 +39,7 @@ function checkForVisibleElements() {
   });
 
   if (tracking.length === 0) {
-    window.removeEventListener('scroll', _onScroll);
+    untrackAll();
   }
 }
 
@@ -50,6 +53,7 @@ function track(elm, options) {
 
 function untrackAll() {
   tracking = [];
+  window.removeEventListener('scroll', _onScroll);
 }
 
 function untrack(elm) {
@@ -67,4 +71,4 @@ function untrack(elm) {
   }
 }
 
-export default {track, untrackAll, untrack, checkForVisibleElements, tracking};
+export default {track, untrackAll, untrack, checkForVisibleElements, getTracking};

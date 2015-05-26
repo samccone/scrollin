@@ -1,5 +1,5 @@
 const assert = require('assert');
-import {track, tracking, untrack} from '../index.js';
+import {track, getTracking, untrack, untrackAll} from '../index.js';
 function RAF(cb) {
   setTimeout(cb, 0);
 }
@@ -28,6 +28,8 @@ global.window = {
     global.window[evt].push(cb);
   },
   removeEventListener: (evt, cb) => {
+    global.window[evt] = global.window[evt] || [];
+
     if (cb) {
       global.window[evt].splice(global.window[evt].indexOf(cb), 1);
     } else {
@@ -39,10 +41,12 @@ global.window = {
   trigger: (evt) => global.window[evt].forEach((fn) => fn())
 };
 
+beforeEach(untrackAll);
+
 describe('adding an element that is visible', () => {
   it('should not track', () => {
     track(new Element(), {});
-    assert.deepEqual(tracking, []);
+    assert.deepEqual(getTracking(), []);
   });
   it('should fire the handler', (done) => {
     track(new Element(), {handler: () => done()});
@@ -50,17 +54,13 @@ describe('adding an element that is visible', () => {
 });
 
 describe('adding an element that is not visible', () => {
-  let elm;
-  beforeEach((done) => {
-    elm = new Element({bottom: 3000, left: 8, right: 1200, top: 2900});
-    track(elm, {});
-    RAF(done);
-  });
-
   it('should be in the tracking array', (done) => {
+    let elm = new Element({bottom: 3000, left: 8, right: 1200, top: 2900});
+
+    track(elm, {});
+
     RAF(() => {
-      assert.deepEqual(tracking.length, 1);
-      untrack(elm);
+      assert.deepEqual(getTracking().length, 1);
       done();
     });
   });
@@ -88,7 +88,7 @@ describe('scrolling an element into the viewport', () => {
     let elm = new Element({top: 600, bottom: 700});
 
     track(elm, {handler: () => {
-      assert.deepEqual([], tracking);
+      assert.deepEqual([], getTracking());
       done();
     }});
 

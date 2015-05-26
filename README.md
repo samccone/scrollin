@@ -22,6 +22,7 @@ Scrollin.track(document.querySelector('#hi'), {handler: () => alert('hi!')})
 * `Scrollin.untrackAll()`
 * `Scrollin.untrack(document.querySelector('#hi'))`
 * `Scrollin.checkForVisibleElements()`
+* `Scrollin.getTracking()`
 
 ### Dev
 

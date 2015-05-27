@@ -29,13 +29,13 @@
     <div>9</div>
     <div id="bottom">10</div>
     <script>
-        Scrollin.track(document.querySelector('div'), {handler: function() {
+        Scrollin.track(document.querySelector('div'), function() {
           console.log("hi mom");
-        }});
+        });
 
-        Scrollin.track(document.querySelector('#bottom'), {handler: function() {
+        Scrollin.track(document.querySelector('#bottom'), function() {
           console.log("hi bottom");
-        }});
+        });
     </script>
   </body>
 </html>

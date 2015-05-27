@@ -13,12 +13,12 @@
 
 ### Use
 ```js
-Scrollin.track(document.querySelector('#hi'), {handler: () => alert('hi!')})
+Scrollin.track(document.querySelector('#hi'), () => alert('hi!'))
 ```
 
 ## API
 
-* `Scrollin.track(document.querySelector('#hi'), {handler: () => alert('hi!')})`
+* `Scrollin.track(document.querySelector('#hi'), () => alert('hi!'))`
 * `Scrollin.untrackAll()`
 * `Scrollin.untrack(document.querySelector('#hi'))`
 * `Scrollin.checkForVisibleElements()`

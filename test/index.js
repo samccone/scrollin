@@ -45,11 +45,11 @@ beforeEach(untrackAll);
 
 describe('adding an element that is visible', () => {
   it('should not track', () => {
-    track(new Element(), {});
+    track(new Element(), () => {});
     assert.deepEqual(getTracking(), []);
   });
   it('should fire the handler', (done) => {
-    track(new Element(), {handler: () => done()});
+    track(new Element(), () => done());
   });
 });
 
@@ -57,7 +57,7 @@ describe('adding an element that is not visible', () => {
   it('should be in the tracking array', (done) => {
     let elm = new Element({bottom: 3000, left: 8, right: 1200, top: 2900});
 
-    track(elm, {});
+    track(elm, () => {});
 
     RAF(() => {
       assert.deepEqual(getTracking().length, 1);
@@ -74,7 +74,7 @@ describe('scrolling an element into the viewport', () => {
   });
 
   it('should invoke the callback', (done) => {
-    track(elm, {handler: () => done()});
+    track(elm, () => done());
 
     RAF(() => {
       elm.top = 0;
@@ -87,10 +87,10 @@ describe('scrolling an element into the viewport', () => {
   it('should untrack the element', (done) => {
     let elm = new Element({top: 600, bottom: 700});
 
-    track(elm, {handler: () => {
+    track(elm, () => {
       assert.deepEqual([], getTracking());
       done();
-    }});
+    });
 
     elm.top = 0;
     elm.right = 10;

@@ -470,10 +470,15 @@ module.exports = isNative;
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-var tracking = [];
-var throttle = require('lodash.throttle');
 
-var _onScroll = throttle(function () {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _lodashThrottle = require('lodash.throttle');
+
+var _lodashThrottle2 = _interopRequireDefault(_lodashThrottle);
+
+var tracking = [];
+var _onScroll = (0, _lodashThrottle2['default'])(function () {
   return window.requestAnimationFrame(checkForVisibleElements);
 }, 100, { leading: false });
 
@@ -500,7 +505,7 @@ function _trackNewElement(elm, fn, options) {
 }
 
 function checkForVisibleElements() {
-  tracking.slice(0).forEach(function (v) {
+  tracking.forEach(function (v) {
     if (isVisible(v.elm)) {
       _handleVisible(v.elm, v.fn, v.options);
     }

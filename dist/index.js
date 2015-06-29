@@ -517,12 +517,12 @@ function track(elm, fn, options) {
   }
 
   window.requestAnimationFrame(function () {
-    return _trackNewElement(elm, fn, options);
-  });
+    _trackNewElement(elm, fn, options);
 
-  if (tracking.length === 0) {
-    window.addEventListener('scroll', _onScroll);
-  }
+    if (tracking.length === 1) {
+      window.addEventListener('scroll', _onScroll);
+    }
+  });
 }
 
 function untrackAll() {

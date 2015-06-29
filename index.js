@@ -29,7 +29,7 @@ function _trackNewElement(elm, fn, options) {
 }
 
 function checkForVisibleElements() {
-  tracking.forEach((v) => {
+  tracking.slice(0).forEach((v) => {
     if (isVisible(v.elm)) {
       _handleVisible(v.elm, v.fn, v.options);
     }

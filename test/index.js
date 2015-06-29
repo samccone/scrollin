@@ -1,5 +1,5 @@
 const assert = require('assert');
-import {track, getTracking, untrack, untrackAll} from '../index.js';
+import {track, getTracking, untrack, untrackAll, checkForVisibleElements} from '../index.js';
 function RAF(cb) {
   setTimeout(cb, 0);
 }
@@ -53,15 +53,32 @@ describe('adding an element that is visible', () => {
   });
 });
 
-describe('adding an element that is not visible', () => {
-  it('should be in the tracking array', (done) => {
-    let elm = new Element({bottom: 3000, left: 8, right: 1200, top: 2900});
+describe('adding an element that is not visible', function() {
+  beforeEach(function() {
+    this.elm = new Element({bottom: 3000, left: 8, right: 1200, top: 2900});
+    this.elm2 = new Element({bottom: 3000, left: 8, right: 1200, top: 2900});
+    track(this.elm, () => {});
+    track(this.elm2, () => {});
+  });
 
-    track(elm, () => {});
+  it('should be in the tracking array', function(done) {
+    RAF(() => {
+      assert.deepEqual(getTracking().length, 2);
+      done();
+    });
+  });
+
+  it('handles when an element dynamically enters the viewport', function() {
+    this.elm.top = 0;
+    this.elm.right = 10;
+    this.elm.bottom = 100;
+    this.elm2.top = 0;
+    this.elm2.right = 10;
+    this.elm2.bottom = 100;
 
     RAF(() => {
-      assert.deepEqual(getTracking().length, 1);
-      done();
+      checkForVisibleElements();
+      assert.deepEqual(getTracking(), []);
     });
   });
 });

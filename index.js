@@ -45,11 +45,13 @@ function track(elm, fn, options) {
     throw new Error('You must pass a callback function');
   }
 
-  window.requestAnimationFrame(() => _trackNewElement(elm, fn, options));
+  window.requestAnimationFrame(() => {
+    _trackNewElement(elm, fn, options);
 
-  if (tracking.length === 0) {
-    window.addEventListener('scroll', _onScroll);
-  }
+    if (tracking.length === 1) {
+      window.addEventListener('scroll', _onScroll);
+    }
+  });
 }
 
 function untrackAll() {

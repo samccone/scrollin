@@ -68,7 +68,7 @@ describe('adding an element that is not visible', function() {
     });
   });
 
-  it('handles when an element dynamically enters the viewport', function() {
+  it('handles when an element dynamically enters the viewport', function(done) {
     this.elm.top = 0;
     this.elm.right = 10;
     this.elm.bottom = 100;
@@ -79,6 +79,7 @@ describe('adding an element that is not visible', function() {
     RAF(() => {
       checkForVisibleElements();
       assert.deepEqual(getTracking(), []);
+      done();
     });
   });
 });

@@ -36,6 +36,7 @@
   },
   "homepage": "https://github.com/samccone/scrollin",
   "dependencies": {
-    "lodash.throttle": "^3.0.2"
+    "lodash.throttle": "^3.0.2",
+    "lodash.defaults": "^4.0.0"
   }
 }

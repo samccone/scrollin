@@ -117,3 +117,123 @@ describe('scrolling an element into the viewport', () => {
     global.window.trigger('scroll');
   });
 });
+
+describe('handling an element with top offset', () => {
+  let elm;
+
+  beforeEach(() => {
+    elm = new Element({top: 600, bottom: 700});
+  });
+
+  it('should detect the element and stop tracking', (done) => {
+    track(elm, () => {}, {top: -60});
+    elm.top = 250;
+
+    RAF(() => {
+      checkForVisibleElements();
+      assert.deepEqual(getTracking(), []);
+      done();
+    });
+  });
+
+  it('should not detect the element and keep tracking', (done) => {
+    track(elm, () => {}, {top: 60});
+    elm.top = 150;
+
+    RAF(() => {
+      checkForVisibleElements();
+      assert.equal(getTracking().length, 1);
+      done();
+    });
+  });
+});
+
+describe('handling an element with bottom offset', () => {
+  let elm;
+
+  beforeEach(() => {
+    elm = new Element({top: -200, bottom: -100});
+  });
+
+  it('should detect the element and stop tracking', (done) => {
+    track(elm, () => {}, {bottom: -60});
+    elm.bottom = -40;
+
+    RAF(() => {
+      checkForVisibleElements();
+      assert.deepEqual(getTracking(), []);
+      done();
+    });
+  });
+
+  it('should not detect the element and keep tracking', (done) => {
+    track(elm, () => {}, {bottom: 60});
+    elm.bottom = 40;
+
+    RAF(() => {
+      checkForVisibleElements();
+      assert.equal(getTracking().length, 1);
+      done();
+    });
+  });
+});
+
+describe('handling an element with left offset', () => {
+  let elm;
+
+  beforeEach(() => {
+    elm = new Element({top: 100, bottom: 200, left: 600, right: 800});
+  });
+
+  it('should detect the element and stop tracking', (done) => {
+    track(elm, () => {}, {left: -60});
+    elm.left = 540;
+
+    RAF(() => {
+      checkForVisibleElements();
+      assert.deepEqual(getTracking(), []);
+      done();
+    });
+  });
+
+  it('should not detect the element and keep tracking', (done) => {
+    track(elm, () => {}, {left: 60});
+    elm.left = 460;
+
+    RAF(() => {
+      checkForVisibleElements();
+      assert.equal(getTracking().length, 1);
+      done();
+    });
+  });
+});
+
+describe('handling an element with right offset', () => {
+  let elm;
+
+  beforeEach(() => {
+    elm = new Element({top: 100, bottom: 200, left: -200, right: -100});
+  });
+
+  it('should detect the element and stop tracking', (done) => {
+    track(elm, () => {}, {right: -60});
+    elm.right = -40;
+
+    RAF(() => {
+      checkForVisibleElements();
+      assert.deepEqual(getTracking(), []);
+      done();
+    });
+  });
+
+  it('should not detect the element and keep tracking', (done) => {
+    track(elm, () => {}, {right: 60});
+    elm.right = 40;
+
+    RAF(() => {
+      checkForVisibleElements();
+      assert.equal(getTracking().length, 1);
+      done();
+    });
+  });
+});

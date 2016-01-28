@@ -43,18 +43,21 @@ function checkForVisibleElements() {
 }
 
 function track(elm, fn, options) {
+  let elements = [].concat(elm);
   if (typeof fn !== 'function') {
     throw new Error('You must pass a callback function');
   }
 
   options = defaults(options, defaultOptions);
 
-  window.requestAnimationFrame(() => {
-    _trackNewElement(elm, fn, options);
+  return elements.forEach((element) => {
+    window.requestAnimationFrame(() => {
+      _trackNewElement(element, fn, options);
 
-    if (tracking.length === 1) {
-      window.addEventListener('scroll', _onScroll);
-    }
+      if (tracking.length === 1) {
+        window.addEventListener('scroll', _onScroll);
+      }
+    });
   });
 }
 

@@ -43,6 +43,31 @@ global.window = {
 
 beforeEach(untrackAll);
 
+describe('adding an array of elements', function() {
+  beforeEach(function() {
+    this.elements = [new Element(), new Element(), new Element()];
+    this.cb = () => {};
+  });
+
+  it('should be on the tracking array', function() {
+    track(this.elements, this.cb);
+    RAF(() => {
+      assert.deepEqual(getTracking().length, this.elements.length);
+    });
+  });
+
+  it('should fire the handler', function(done) {
+    let expected = this.elements.length;
+    const handler = () => {
+      expected--;
+      if (expected === 0) {
+        done();
+      }
+    };
+    track(this.elements, handler);
+  });
+});
+
 describe('adding an element that is visible', () => {
   it('should not track', () => {
     track(new Element(), () => {});

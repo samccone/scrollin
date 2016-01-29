@@ -48,6 +48,7 @@ function checkForVisibleElements() {
 }
 
 function track(elm, fn, options) {
+  var elements = [].concat(elm);
   if (typeof fn !== 'function') {
     throw new Error('You must pass a callback function');
   }
@@ -55,11 +56,13 @@ function track(elm, fn, options) {
   options = defaults(options, defaultOptions);
 
   window.requestAnimationFrame(function () {
-    _trackNewElement(elm, fn, options);
+    elements.forEach(function (element) {
+      _trackNewElement(element, fn, options);
 
-    if (tracking.length === 1) {
-      window.addEventListener('scroll', _onScroll);
-    }
+      if (tracking.length === 1) {
+        window.addEventListener('scroll', _onScroll);
+      }
+    });
   });
 }
 

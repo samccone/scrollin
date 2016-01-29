@@ -51,7 +51,7 @@ function track(elm, fn, options) {
   options = defaults(options, defaultOptions);
 
   window.requestAnimationFrame(() => {
-    elements.forEach((element) => {
+    elements.forEach(element => {
       _trackNewElement(element, fn, options);
 
       if (tracking.length === 1) {

@@ -59,6 +59,8 @@ function track(elm, fn, options) {
       }
     });
   });
+
+  return elements;
 }
 
 function untrackAll() {

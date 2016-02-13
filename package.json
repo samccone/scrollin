@@ -14,7 +14,7 @@
   },
   "name": "scrollin",
   "description": "Do something great when an element enters the viewport.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "main": "dist/index.js",
   "directories": {
     "test": "test"

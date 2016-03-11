@@ -43,6 +43,10 @@ function checkForVisibleElements() {
 }
 
 function track(elm, fn, options) {
+  if (elm.length) {
+    elm = Array.prototype.slice.call(elm);
+  }
+
   let elements = [].concat(elm);
   if (typeof fn !== 'function') {
     throw new Error('You must pass a callback function');

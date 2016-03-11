@@ -31,7 +31,7 @@ function _trackNewElement(elm, fn, options) {
 }
 
 function checkForVisibleElements() {
-  tracking.slice(0).forEach((v) => {
+  Array.from(tracking).forEach((v) => {
     if (isVisible(v.elm, v.options)) {
       _handleVisible(v.elm, v.fn, v.options);
     }
@@ -43,6 +43,10 @@ function checkForVisibleElements() {
 }
 
 function track(elm, fn, options) {
+  if (elm.length) {
+    elm = Array.from(elm);
+  }
+
   let elements = [].concat(elm);
   if (typeof fn !== 'function') {
     throw new Error('You must pass a callback function');

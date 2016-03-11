@@ -48,6 +48,10 @@ function checkForVisibleElements() {
 }
 
 function track(elm, fn, options) {
+  if (elm.length) {
+    elm = Array.prototype.slice.call(elm);
+  }
+
   var elements = [].concat(elm);
   if (typeof fn !== 'function') {
     throw new Error('You must pass a callback function');
@@ -231,9 +235,8 @@ function isNative(value) {
 module.exports = getNative;
 
 },{}],3:[function(require,module,exports){
-(function (global){
 /**
- * lodash 4.0.1 (Custom Build) <https://lodash.com/>
+ * lodash 4.0.5 (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
  * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -268,7 +271,7 @@ function isIndex(value, length) {
 }
 
 /** Used for built-in method references. */
-var objectProto = global.Object.prototype;
+var objectProto = Object.prototype;
 
 /** Used to check objects for own properties. */
 var hasOwnProperty = objectProto.hasOwnProperty;
@@ -291,8 +294,7 @@ var objectToString = objectProto.toString;
  */
 function assignValue(object, key, value) {
   var objValue = object[key];
-  if ((!eq(objValue, value) ||
-        (eq(objValue, objectProto[key]) && !hasOwnProperty.call(object, key))) ||
+  if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) ||
       (value === undefined && !(key in object))) {
     object[key] = value;
   }
@@ -329,8 +331,11 @@ function copyObjectWith(source, props, object, customizer) {
       length = props.length;
 
   while (++index < length) {
-    var key = props[index],
-        newValue = customizer ? customizer(object[key], source[key], key, object, source) : source[key];
+    var key = props[index];
+
+    var newValue = customizer
+      ? customizer(object[key], source[key], key, object, source)
+      : source[key];
 
     assignValue(object, key, newValue);
   }
@@ -351,7 +356,10 @@ function createAssigner(assigner) {
         customizer = length > 1 ? sources[length - 1] : undefined,
         guard = length > 2 ? sources[2] : undefined;
 
-    customizer = typeof customizer == 'function' ? (length--, customizer) : undefined;
+    customizer = typeof customizer == 'function'
+      ? (length--, customizer)
+      : undefined;
+
     if (guard && isIterateeCall(sources[0], sources[1], guard)) {
       customizer = length < 3 ? undefined : customizer;
       length = 1;
@@ -380,7 +388,7 @@ function createAssigner(assigner) {
 var getLength = baseProperty('length');
 
 /**
- * Checks if the provided arguments are from an iteratee call.
+ * Checks if the given arguments are from an iteratee call.
  *
  * @private
  * @param {*} value The potential iteratee value argument.
@@ -442,7 +450,6 @@ function eq(value, other) {
  *
  * @static
  * @memberOf _
- * @type Function
  * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
@@ -461,8 +468,7 @@ function eq(value, other) {
  * // => false
  */
 function isArrayLike(value) {
-  return value != null &&
-    !(typeof value == 'function' && isFunction(value)) && isLength(getLength(value));
+  return value != null && isLength(getLength(value)) && !isFunction(value);
 }
 
 /**
@@ -483,8 +489,8 @@ function isArrayLike(value) {
  */
 function isFunction(value) {
   // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 8 which returns 'object' for typed array constructors, and
-  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+  // in Safari 8 which returns 'object' for typed array and weak map constructors,
+  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
   var tag = isObject(value) ? objectToString.call(value) : '';
   return tag == funcTag || tag == genTag;
 }
@@ -514,7 +520,8 @@ function isFunction(value) {
  * // => false
  */
 function isLength(value) {
-  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
 }
 
 /**
@@ -541,8 +548,6 @@ function isLength(value) {
  * // => false
  */
 function isObject(value) {
-  // Avoid a V8 JIT bug in Chrome 19-20.
-  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
   var type = typeof value;
   return !!value && (type == 'object' || type == 'function');
 }
@@ -580,7 +585,6 @@ var assignInWith = createAssigner(function(object, source, srcIndex, customizer)
 
 module.exports = assignInWith;
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"lodash.keysin":6,"lodash.rest":7}],4:[function(require,module,exports){
 /**
  * lodash 3.1.1 (Custom Build) <https://lodash.com/>
@@ -818,9 +822,8 @@ function isObject(value) {
 module.exports = debounce;
 
 },{"lodash._getnative":2}],5:[function(require,module,exports){
-(function (global){
 /**
- * lodash 4.0.0 (Custom Build) <https://lodash.com/>
+ * lodash 4.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
  * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -837,11 +840,11 @@ var assignInWith = require('lodash.assigninwith'),
  * @private
  * @param {Function} func The function to invoke.
  * @param {*} thisArg The `this` binding of `func`.
- * @param {...*} [args] The arguments to invoke `func` with.
+ * @param {...*} args The arguments to invoke `func` with.
  * @returns {*} Returns the result of `func`.
  */
 function apply(func, thisArg, args) {
-  var length = args ? args.length : 0;
+  var length = args.length;
   switch (length) {
     case 0: return func.call(thisArg);
     case 1: return func.call(thisArg, args[0]);
@@ -852,7 +855,7 @@ function apply(func, thisArg, args) {
 }
 
 /** Used for built-in method references. */
-var objectProto = global.Object.prototype;
+var objectProto = Object.prototype;
 
 /** Used to check objects for own properties. */
 var hasOwnProperty = objectProto.hasOwnProperty;
@@ -935,11 +938,10 @@ var defaults = rest(function(args) {
 
 module.exports = defaults;
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"lodash.assigninwith":3,"lodash.rest":7}],6:[function(require,module,exports){
 (function (global){
 /**
- * lodash 4.0.0 (Custom Build) <https://lodash.com/>
+ * lodash 4.1.3 (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
  * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -959,6 +961,44 @@ var argsTag = '[object Arguments]',
 /** Used to detect unsigned integer values. */
 var reIsUint = /^(?:0|[1-9]\d*)$/;
 
+/** Used to determine if values are of the language type `Object`. */
+var objectTypes = {
+  'function': true,
+  'object': true
+};
+
+/** Detect free variable `exports`. */
+var freeExports = (objectTypes[typeof exports] && exports && !exports.nodeType)
+  ? exports
+  : undefined;
+
+/** Detect free variable `module`. */
+var freeModule = (objectTypes[typeof module] && module && !module.nodeType)
+  ? module
+  : undefined;
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = checkGlobal(freeExports && freeModule && typeof global == 'object' && global);
+
+/** Detect free variable `self`. */
+var freeSelf = checkGlobal(objectTypes[typeof self] && self);
+
+/** Detect free variable `window`. */
+var freeWindow = checkGlobal(objectTypes[typeof window] && window);
+
+/** Detect `this` as the global object. */
+var thisGlobal = checkGlobal(objectTypes[typeof this] && this);
+
+/**
+ * Used as a reference to the global object.
+ *
+ * The `this` value is used if it's the global object to avoid Greasemonkey's
+ * restricted `window` object, otherwise the `window` object is used.
+ */
+var root = freeGlobal ||
+  ((freeWindow !== (thisGlobal && thisGlobal.window)) && freeWindow) ||
+    freeSelf || thisGlobal || Function('return this')();
+
 /**
  * The base implementation of `_.times` without support for iteratee shorthands
  * or max array length checks.
@@ -976,6 +1016,17 @@ function baseTimes(n, iteratee) {
     result[index] = iteratee(index);
   }
   return result;
+}
+
+/**
+ * Checks if `value` is a global object.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {null|Object} Returns `value` if it's a global object, else `null`.
+ */
+function checkGlobal(value) {
+  return (value && value.Object === Object) ? value : null;
 }
 
 /**
@@ -1010,7 +1061,7 @@ function iteratorToArray(iterator) {
 }
 
 /** Used for built-in method references. */
-var objectProto = global.Object.prototype;
+var objectProto = Object.prototype;
 
 /** Used to check objects for own properties. */
 var hasOwnProperty = objectProto.hasOwnProperty;
@@ -1022,7 +1073,7 @@ var hasOwnProperty = objectProto.hasOwnProperty;
 var objectToString = objectProto.toString;
 
 /** Built-in value references. */
-var Reflect = global.Reflect,
+var Reflect = root.Reflect,
     enumerate = Reflect ? Reflect.enumerate : undefined,
     propertyIsEnumerable = objectProto.propertyIsEnumerable;
 
@@ -1086,9 +1137,11 @@ var getLength = baseProperty('length');
  */
 function indexKeys(object) {
   var length = object ? object.length : undefined;
-  return (isLength(length) && (isArray(object) || isString(object) || isArguments(object)))
-    ? baseTimes(length, String)
-    : null;
+  if (isLength(length) &&
+      (isArray(object) || isString(object) || isArguments(object))) {
+    return baseTimes(length, String);
+  }
+  return null;
 }
 
 /**
@@ -1132,7 +1185,7 @@ function isArguments(value) {
  *
  * @static
  * @memberOf _
- * @type Function
+ * @type {Function}
  * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
@@ -1159,7 +1212,6 @@ var isArray = Array.isArray;
  *
  * @static
  * @memberOf _
- * @type Function
  * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
@@ -1178,8 +1230,7 @@ var isArray = Array.isArray;
  * // => false
  */
 function isArrayLike(value) {
-  return value != null &&
-    !(typeof value == 'function' && isFunction(value)) && isLength(getLength(value));
+  return value != null && isLength(getLength(value)) && !isFunction(value);
 }
 
 /**
@@ -1188,7 +1239,6 @@ function isArrayLike(value) {
  *
  * @static
  * @memberOf _
- * @type Function
  * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
@@ -1228,8 +1278,8 @@ function isArrayLikeObject(value) {
  */
 function isFunction(value) {
   // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 8 which returns 'object' for typed array constructors, and
-  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+  // in Safari 8 which returns 'object' for typed array and weak map constructors,
+  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
   var tag = isObject(value) ? objectToString.call(value) : '';
   return tag == funcTag || tag == genTag;
 }
@@ -1259,7 +1309,8 @@ function isFunction(value) {
  * // => false
  */
 function isLength(value) {
-  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
 }
 
 /**
@@ -1286,8 +1337,6 @@ function isLength(value) {
  * // => false
  */
 function isObject(value) {
-  // Avoid a V8 JIT bug in Chrome 19-20.
-  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
   var type = typeof value;
   return !!value && (type == 'object' || type == 'function');
 }
@@ -1386,9 +1435,8 @@ module.exports = keysIn;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],7:[function(require,module,exports){
-(function (global){
 /**
- * lodash 4.0.0 (Custom Build) <https://lodash.com/>
+ * lodash 4.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
  * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -1420,7 +1468,7 @@ var reIsBinary = /^0b[01]+$/i;
 /** Used to detect octal string values. */
 var reIsOctal = /^0o[0-7]+$/i;
 
-/** Built-in method references without a dependency on `global`. */
+/** Built-in method references without a dependency on `root`. */
 var freeParseInt = parseInt;
 
 /**
@@ -1430,11 +1478,11 @@ var freeParseInt = parseInt;
  * @private
  * @param {Function} func The function to invoke.
  * @param {*} thisArg The `this` binding of `func`.
- * @param {...*} [args] The arguments to invoke `func` with.
+ * @param {...*} args The arguments to invoke `func` with.
  * @returns {*} Returns the result of `func`.
  */
 function apply(func, thisArg, args) {
-  var length = args ? args.length : 0;
+  var length = args.length;
   switch (length) {
     case 0: return func.call(thisArg);
     case 1: return func.call(thisArg, args[0]);
@@ -1445,7 +1493,7 @@ function apply(func, thisArg, args) {
 }
 
 /** Used for built-in method references. */
-var objectProto = global.Object.prototype;
+var objectProto = Object.prototype;
 
 /**
  * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
@@ -1555,8 +1603,6 @@ function isFunction(value) {
  * // => false
  */
 function isObject(value) {
-  // Avoid a V8 JIT bug in Chrome 19-20.
-  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
   var type = typeof value;
   return !!value && (type == 'object' || type == 'function');
 }
@@ -1637,7 +1683,6 @@ function toNumber(value) {
 
 module.exports = rest;
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],8:[function(require,module,exports){
 /**
  * lodash 3.0.4 (Custom Build) <https://lodash.com/>

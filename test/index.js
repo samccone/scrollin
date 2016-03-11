@@ -4,6 +4,18 @@ function RAF(cb) {
   setTimeout(cb, 0);
 }
 
+class NodeList {
+  constructor(...nodes) {
+    this.length = nodes.length;
+    for (let i = 0; i < nodes.length; ++i) {
+      this[i] = nodes[i];
+    }
+  }
+  item(idx) {
+    return this[idx];
+  }
+}
+
 class Element {
   constructor(bounds = {}) {
     this.right = bounds.right || 10;
@@ -45,7 +57,7 @@ beforeEach(untrackAll);
 
 describe('adding an array of elements', function() {
   beforeEach(function() {
-    this.elements = [new Element(), new Element(), new Element()];
+    this.elements = new NodeList(new Element(), new Element(), new Element());
     this.cb = () => {};
   });
 

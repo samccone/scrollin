@@ -1,23 +1,26 @@
-<h1 align="left"> Scrollin </h1>
+Scrollin
+==
 <p align="center">
-  <img alt="scrollin" width="300px" align="left" src="https://cloud.githubusercontent.com/assets/883126/7601542/595b08ce-f8e5-11e4-9ba5-ee868f3004b9.png"/>
+  <strong>Do something great when an element enters the viewport.</strong>
+  <a href="https://travis-ci.org/samccone/scrollin"><img alt="Build Status" src="https://travis-ci.org/samccone/scrollin.svg" /></a> <br/>
+  <img alt="scrollin" width="300px" src="https://cloud.githubusercontent.com/assets/883126/7601542/595b08ce-f8e5-11e4-9ba5-ee868f3004b9.png"/>
 </p>
-**Do something great when an element enters the viewport.**
 
-</br></br></br></br></br></br></br></br></br>
-### Install
+Install
+==
 <h4>
   <pre align="center">npm i scrollin</pre>
   <pre align="center">bower i scrollin</pre>
 </h4>
 
-### Use
+Use
+==
 ```js
 Scrollin.track(document.querySelector('#hi'), () => alert('hi!'))
 ```
 
-#### Options
-
+Options
+==
 You can specify optional offset params to control when an elements is considered in the "viewport".
 
 ```js
@@ -29,8 +32,8 @@ Scrollin.track(document.querySelector('#hi'), () => alert('hi!'), {
 })
 ```
 
-## API
-
+API
+==
 * `Scrollin.track(document.querySelector('#hi'), () => alert('hi!'))`
 * `Scrollin.track(document.querySelectorAll('.hi'), () => alert('hi!'))`
 * `Scrollin.untrackAll()`
@@ -38,8 +41,8 @@ Scrollin.track(document.querySelector('#hi'), () => alert('hi!'), {
 * `Scrollin.checkForVisibleElements()`
 * `Scrollin.getTracking()`
 
-### Dev
-
+Dev
+==
 * `npm i`
 * `npm run dev`
 
@@ -54,5 +57,3 @@ Scrollin.track(document.querySelector('#hi'), () => alert('hi!'), {
 * You may need to polyfill `Array.prototype.some`
 
 📜
-
-[![Build Status](https://travis-ci.org/samccone/scrollin.svg)](https://travis-ci.org/samccone/scrollin)
